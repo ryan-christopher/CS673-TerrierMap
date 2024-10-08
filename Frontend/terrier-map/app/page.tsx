@@ -8,18 +8,21 @@ const Map = dynamic(() => import("../components/Map"), {
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-10 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="font-['Caprasimo'] text-center text-[100px] ml-auto mr-auto inline-block">TerrierMap</h1>
-        <Image
+    <div className="items-center justify-items-center min-h-screen">
+      <main className=" mt-[30px]">
+      <Image
       src="/Logo.png"
-      width={200}
-      height={200}
+      width={70}
+      height={70}
       alt="TerrierMap logo of a Boston Terrier dog in front of a topographical map of Boston."
       className="ml-auto mr-auto"
     />
+        <h1 className="font-['Caprasimo'] text-center text-[40px] lg:text-[60px] ml-auto mr-auto">TerrierMap</h1>
+        
+      <div className="w-[90vw] lg:w-[50vw] h-[600px] lg:h-[75vh] block ml-auto mr-auto rounded-[10px] overflow-hidden">
 
-        <Map />
+      <Map />
+      </div>
 
 
       </main>

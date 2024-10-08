@@ -15,7 +15,7 @@ const geistMono = localFont({
 
 
 export const metadata = {
-  title: "TerrierMap 🐶🗺️",
+  title: "TerrierMap",
   description: "Who says you can't teach an old dog new tricks? CS673 Group 6 Project.",
 };
 
