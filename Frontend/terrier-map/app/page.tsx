@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from "next/image";
@@ -28,7 +27,7 @@ export default function Home() {
           className="ml-auto mr-auto"
         />
         {/* LocationBox component to get current location */}
-        <LocationBox setLocation={setLocation} />
+        <LocationBox location={location} setLocation={setLocation} /> {/* Added 'location' prop */}
 
         {/* Pass location to Map component */}
         <Map location={location} />

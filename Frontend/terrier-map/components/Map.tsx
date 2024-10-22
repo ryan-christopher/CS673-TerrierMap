@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { LatLngTuple } from "leaflet"; // Import LatLngTuple for type safety
 
 // START: Preserve spaces to avoid auto-sorting
 import "leaflet/dist/leaflet.css";
@@ -8,13 +9,13 @@ import "leaflet-defaulticon-compatibility";
 // END: Preserve spaces to avoid auto-sorting
 
 export default function Map({ location }: { location: { latitude: number, longitude: number } | null }) {
-  const defaultPosition = [42.350876, -71.106918]; // Default BU coordinates
-  const [mapCenter, setMapCenter] = useState(defaultPosition); // Initial center of the map
+  const defaultPosition: LatLngTuple = [42.350876, -71.106918]; // Default BU coordinates
+  const [mapCenter, setMapCenter] = useState<LatLngTuple>(defaultPosition); // Always a LatLngTuple
 
   // Effect to update the map's center when location is available
   useEffect(() => {
     if (location) {
-      const newCenter = [location.latitude, location.longitude];  // Create new center
+      const newCenter: LatLngTuple = [location.latitude, location.longitude];  // Create new center
       setMapCenter(newCenter);  // Update map center
     }
   }, [location]);
