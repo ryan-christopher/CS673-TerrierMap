@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { LatLngTuple } from "leaflet"; // Import LatLngTuple for type safety
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { LatLngTuple } from "leaflet";
 
 // START: Preserve spaces to avoid auto-sorting
 import "leaflet/dist/leaflet.css";
@@ -8,11 +8,22 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 // END: Preserve spaces to avoid auto-sorting
 
+// Recenter the map when the location changes
+function RecenterMap({ center }: { center: LatLngTuple }) {
+  const map = useMap();  // Access the map instance
+
+  useEffect(() => {
+    map.setView(center);  // Recenter the map when the center prop changes
+  }, [center, map]);
+
+  return null;
+}
+
 export default function Map({ location }: { location: { latitude: number, longitude: number } | null }) {
   const defaultPosition: LatLngTuple = [42.350876, -71.106918]; // Default BU coordinates
-  const [mapCenter, setMapCenter] = useState<LatLngTuple>(defaultPosition); // Always a LatLngTuple
+  const [mapCenter, setMapCenter] = useState<LatLngTuple>(defaultPosition);
 
-  // Effect to update the map's center when location is available
+  // Update the map's center when the location is available
   useEffect(() => {
     if (location) {
       const newCenter: LatLngTuple = [location.latitude, location.longitude];  // Create new center
@@ -24,7 +35,7 @@ export default function Map({ location }: { location: { latitude: number, longit
     <div style={{ height: '500px', width: '100%' }}>
       <MapContainer
         preferCanvas={true}
-        center={mapCenter}  // Center updated dynamically
+        center={mapCenter}  // Initial center, later updated by RecenterMap
         zoom={15}
         scrollWheelZoom={true}
         style={{ height: "100%", width: "100%" }}
@@ -33,6 +44,10 @@ export default function Map({ location }: { location: { latitude: number, longit
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
+        {/* This RecenterMap is inside MapContainer to handle the map's view */}
+        <RecenterMap center={mapCenter} />
+
         <Marker position={mapCenter}>
           <Popup>
             {location
