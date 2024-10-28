@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@firebase/firestore": "^4.7.4",
+    "firebase": "^11.0.1",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "next": "14.2.13",

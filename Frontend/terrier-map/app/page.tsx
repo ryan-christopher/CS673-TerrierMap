@@ -4,6 +4,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import LocationBox from '../components/LocationBox';
+import ListItems from '../components/ListItems';
 
 // Dynamically import the Map component with no server-side rendering
 const Map = dynamic(() => import("../components/Map"), {
@@ -12,6 +13,9 @@ const Map = dynamic(() => import("../components/Map"), {
 });
 
 export default function Home() {
+ 
+
+
   // Define location and setLocation in state
   const [location, setLocation] = useState<{ latitude: number, longitude: number } | null>(null);
   const [buildingCode, setBuildingCode] = useState("");  // Initialize state
@@ -28,6 +32,10 @@ export default function Home() {
           alt="TerrierMap logo of a Boston Terrier dog in front of a topographical map of Boston."
           className="ml-auto mr-auto"
         />
+
+    
+  <ListItems />
+  
   {/* Input Form */}
   <div className="flex space-x-4">
           {/* Building Code Input */}

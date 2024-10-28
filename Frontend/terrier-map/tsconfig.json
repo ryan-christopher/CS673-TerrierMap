@@ -27,7 +27,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "app/page.tsx"  ],
+, "app/page.tsx", "app/utils/firebase.js"  ],
   "exclude": [
     "node_modules"
   ]
