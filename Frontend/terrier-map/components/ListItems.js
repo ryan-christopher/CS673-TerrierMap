@@ -9,6 +9,8 @@ const Items = () => {
 
     useEffect(() => {
         const fetchItems = async () => {
+            let res = await fetch('/api/test');
+            console.log(res)
             const querySnapshot = await getDocs(collection(db, 'classrooms'))
             setItems(querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id})))
         }
