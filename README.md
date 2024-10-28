@@ -15,5 +15,16 @@ For example, a student may have a class located at CAS. With that information, t
 | CAS  | :arrow_right: | College of Arts and Sciences | :arrow_right: | 725 Commonwealth Avenue |  
 
 
+TerrierMap serves as a useful tool that will allow someone to enter the building code and room number that they would like to go to, and receive step by step instructions on how to get there. 
+
+## What we are using:
+
+TerrierMap is built with Next.js and is currently deployed through Vercel. The application uses a firestore database that has the building code to street address conversions, and uses React Leaflet for displaying the map. Leaflet Routing Machine is being used to provide step by step instructions on how to get from the current location to the destination.
 
 
+#### Useful Links
+- [Next.js](https://nextjs.org/)
+- [Vercel](https://vercel.com/)
+- [Firebase](https://firebase.google.com/)
+- [React Leaflet](https://react-leaflet.js.org/)
+- [Leaflet Routing Machine](https://www.liedman.net/leaflet-routing-machine/)

@@ -1,2 +1,2 @@
 # Project Artifacts
-This folder contains the project artifacts for TerrierMap such as the Proposal, SCMP, and SPMP.
+This folder contains the project artifacts for TerrierMap including the Proposal, SCMP, and SPMP, SRS, and SDD.
