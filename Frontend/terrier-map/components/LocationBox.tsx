@@ -29,13 +29,13 @@ const LocationBox = ({ location, setLocation }: { location: Location | null, set
   };
 
   return (
-    <div>
-      <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700" onClick={getLocation}>
+    <div className="flex flex-col items-center gap-4">
+      <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 active:bg-blue-800 transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={getLocation}>
         Get Current Location
       </button>
       {location ? (
         <p>
-          Latitude: {location.latitude}, Longitude: {location.longitude}
+          Latitude: {location[0]}, Longitude: {location[1]}
         </p>
       ) : (
         <p>{errorMessage}</p>

@@ -3,7 +3,9 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { LatLngTuple } from "leaflet";
 import LocationBox from '../components/LocationBox';
+import ClassroomSearch from '../components/ClassroomSearch';
 import ListItems from '../components/ListItems';
 
 // Dynamically import the Map component with no server-side rendering
@@ -14,17 +16,16 @@ const Map = dynamic(() => import("../components/Map"), {
 
 export default function Home() {
  
+  const [userLocation, setUserLocation] = useState<LatLngTuple  | null>(null);
+  const [classroomLocation, setClassroomLocation] = useState<LatLngTuple  | null>(null);
 
-
-  // Define location and setLocation in state
-  const [location, setLocation] = useState<{ latitude: number, longitude: number } | null>(null);
-  const [buildingCode, setBuildingCode] = useState("");  // Initialize state
-  const [roomNumber, setRoomNumber] = useState("");  // Room number state
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-10 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="font-['Caprasimo'] text-center text-[100px] ml-auto mr-auto inline-block">TerrierMap</h1>
+<div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-4 sm:p-10 pb-10 gap-8 font-[family-name:var(--font-geist-sans)]">
+  <main className="flex flex-col gap-4 row-start-2 items-center sm:items-start">
+    {/* Title with responsive font size and centered alignment */}
+    <h1 className="font-['Caprasimo'] text-center text-[60px] sm:text-[80px] lg:text-[100px] mt-[-10px] ">TerrierMap</h1>
+
         <Image
           src="/Logo.png"
           width={200}
@@ -35,34 +36,29 @@ export default function Home() {
 
     
   <ListItems />
-  
-  {/* Input Form */}
-  <div className="flex space-x-4">
-          {/* Building Code Input */}
-          <input
-            type="text"
-            placeholder="Building Code"
-            value={buildingCode}
-            onChange={(e) => setBuildingCode(e.target.value)}
-            maxLength={3}  // Limit input to 3 characters
-            className="border rounded-full px-6 py-3 text-lg text-black focus:outline-none focus:ring-2 focus:ring-black"
-          />
 
-          {/* Room Number Input */}
-          <input
-            type="text"
-            placeholder="Room #"
-            value={roomNumber}
-            onChange={(e) => setRoomNumber(e.target.value)}
-            className="border rounded-full px-6 py-3 text-lg text-black focus:outline-none focus:ring-2 focus:ring-black"
-          />
-        </div>
-        
-        {/* LocationBox component to get current location */}
-        <LocationBox location={location} setLocation={setLocation} /> {/* Added 'location' prop */}
 
-        {/* Pass location to Map component */}
-        <Map location={location} />
+        {/* Classroom Search Component */}
+        <ClassroomSearch 
+          setClassroomLocation={(location) => {
+            if (location) {
+              setClassroomLocation([location.latitude, location.longitude]);
+            }
+          }} 
+        />
+
+        {/* LocationBox component to get current user location */}
+        <LocationBox 
+          location={userLocation} 
+          setLocation={(location) => {
+            if (location) {
+              setUserLocation([location.latitude, location.longitude]);
+            }
+          }} 
+        />
+
+        {/* Map component with user and classroom location props */}
+        <Map userLocation={userLocation} classroomLocation={classroomLocation} />
       </main>
       
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
