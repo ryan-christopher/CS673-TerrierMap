@@ -34,12 +34,12 @@ const LocationBox = ({ location, setLocation }: { location: Location | null, set
         Get Current Location
       </button>
       {location ? (
-        <p>
-          Latitude: {location[0]}, Longitude: {location[1]}
-        </p>
-      ) : (
-        <p>{errorMessage}</p>
-      )}
+  <p>
+    Latitude: {location.latitude}, Longitude: {location.longitude}
+  </p>
+) : (
+  <p>{errorMessage}</p>
+)}
     </div>
   );
 };

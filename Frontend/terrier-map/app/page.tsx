@@ -8,6 +8,12 @@ import LocationBox from '../components/LocationBox';
 import ClassroomSearch from '../components/ClassroomSearch';
 import ListItems from '../components/ListItems';
 
+
+interface Location {
+  latitude: number;
+  longitude: number;
+}
+
 // Dynamically import the Map component with no server-side rendering
 const Map = dynamic(() => import("../components/Map"), {
   ssr: false,
@@ -16,13 +22,13 @@ const Map = dynamic(() => import("../components/Map"), {
 
 export default function Home() {
  
-  const [userLocation, setUserLocation] = useState<LatLngTuple  | null>(null);
-  const [classroomLocation, setClassroomLocation] = useState<LatLngTuple  | null>(null);
+  const [userLocation, setUserLocation] = useState<Location | null>(null);
+  const [classroomLocation, setClassroomLocation] = useState<Location | null>(null);
 
 
   return (
 <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-4 sm:p-10 pb-10 gap-8 font-[family-name:var(--font-geist-sans)]">
-  <main className="flex flex-col gap-4 row-start-2 items-center sm:items-start">
+  <main className="flex flex-col gap-4 row-start-2 items-center sm:items-center">
     {/* Title with responsive font size and centered alignment */}
     <h1 className="font-['Caprasimo'] text-center text-[60px] sm:text-[80px] lg:text-[100px] mt-[-10px] ">TerrierMap</h1>
 
@@ -42,7 +48,7 @@ export default function Home() {
         <ClassroomSearch 
           setClassroomLocation={(location) => {
             if (location) {
-              setClassroomLocation([location.latitude, location.longitude]);
+              setClassroomLocation({ latitude: location.latitude, longitude: location.longitude });
             }
           }} 
         />
@@ -52,13 +58,15 @@ export default function Home() {
           location={userLocation} 
           setLocation={(location) => {
             if (location) {
-              setUserLocation([location.latitude, location.longitude]);
+              setUserLocation({ latitude: location.latitude, longitude: location.longitude });
             }
           }} 
         />
 
         {/* Map component with user and classroom location props */}
-        <Map userLocation={userLocation} classroomLocation={classroomLocation} />
+        <Map userLocation={userLocation ? [userLocation.latitude, userLocation.longitude] : null} 
+          classroomLocation={classroomLocation ? [classroomLocation.latitude, classroomLocation.longitude] : null} 
+           />
       </main>
       
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
