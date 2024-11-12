@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { IoLocation } from "react-icons/io5";
 
 interface Location {
   latitude: number;
@@ -29,13 +30,14 @@ const LocationBox = ({ location, setLocation }: { location: Location | null, set
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 active:bg-blue-800 transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={getLocation}>
-        Get Current Location
+    <div className="inline-flex absolute right-[20px] top-[20px]">
+      <button className="px-6 py-3 text-[30px] bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 active:bg-blue-800 transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={getLocation}>
+      <IoLocation />
       </button>
       {location ? (
+
   <p>
-    Latitude: {location.latitude}, Longitude: {location.longitude}
+    {/* Latitude: {location.latitude}, Longitude: {location.longitude} */}
   </p>
 ) : (
   <p>{errorMessage}</p>

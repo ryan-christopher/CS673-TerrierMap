@@ -27,25 +27,29 @@ export default function Home() {
 
 
   return (
-<div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-4 sm:p-10 pb-10 gap-8 font-[family-name:var(--font-geist-sans)]">
-  <main className="flex flex-col gap-4 row-start-2 items-center sm:items-center">
+<div className="">
+  <main className="w-full h-screen">
+
+  <div className="absolute top-0 z-0 left-0 h-screen w-screen">
+{/* Map component with user and classroom location props */}
+<Map userLocation={userLocation ? [userLocation.latitude, userLocation.longitude] : null} 
+          classroomLocation={classroomLocation ? [classroomLocation.latitude, classroomLocation.longitude] : null} 
+           />
+    </div>
+
     {/* Title with responsive font size and centered alignment */}
-    <h1 className="font-['Caprasimo'] text-center text-[60px] sm:text-[80px] lg:text-[100px] mt-[-10px] ">TerrierMap</h1>
+    <div className="absolute top-0 left-0 z-10 w-full h-[100px] bg-[#0000008a] backdrop-blur-sm">
+    <Image
+  src="/Logo.png"
+  width={80}
+  height={80}
+  alt="TerrierMap logo of a Boston Terrier dog in front of a topographical map of Boston."
+  className="ml-[10px] mt-[10px] p-0 inline fixed top-0"
+/>
+    <h1 className="font-['Caprasimo'] text-[60px] sm:text-[30px] lg:text-[60px] mt-[3px] ml-[100px] inline">TerrierMap</h1>
 
-        <Image
-          src="/Logo.png"
-          width={200}
-          height={200}
-          alt="TerrierMap logo of a Boston Terrier dog in front of a topographical map of Boston."
-          className="ml-auto mr-auto"
-        />
-
-    
-  <ListItems />
-
-
-        {/* Classroom Search Component */}
-        <ClassroomSearch 
+ {/* Classroom Search Component */}
+ <ClassroomSearch
           setClassroomLocation={(location) => {
             if (location) {
               setClassroomLocation({ latitude: location.latitude, longitude: location.longitude });
@@ -62,11 +66,15 @@ export default function Home() {
             }
           }} 
         />
+    </div>
+    
 
-        {/* Map component with user and classroom location props */}
-        <Map userLocation={userLocation ? [userLocation.latitude, userLocation.longitude] : null} 
-          classroomLocation={classroomLocation ? [classroomLocation.latitude, classroomLocation.longitude] : null} 
-           />
+  {/* 
+  <ListItems />
+    */}
+
+    
+        
       </main>
       
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">

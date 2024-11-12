@@ -4,6 +4,7 @@ import { useState } from 'react';
 import db from '../app/utils/firestore';
 import { doc, getDoc } from 'firebase/firestore';
 import { GeoPoint } from 'firebase/firestore';
+import { IoMdSearch } from "react-icons/io";
 
 
 interface Location {
@@ -60,7 +61,7 @@ export default function ClassroomSearch({
   };
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="items-center space-x-4 inline-flex absolute left-[50%] translate-x-[-50%] top-[20px]">
       {/* Input for Building Code */}
       <input
         type="text"
@@ -68,7 +69,7 @@ export default function ClassroomSearch({
         value={buildingCode}
         onChange={(e) => setBuildingCode(e.target.value)}
         maxLength={3}
-        className="w-full border rounded-full px-6 py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-[200px] border rounded-full px-6 py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
         {/* Room Number Input */}
 
@@ -77,14 +78,15 @@ export default function ClassroomSearch({
         placeholder="Room #"
         value={roomNumber}
         onChange={(e) => setRoomNumber(e.target.value)}
-        className="w-full border rounded-full px-6 py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-[200px] border rounded-full px-6 py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
+      
       {/* Search Button */}
       <button
         onClick={handleSearch}
-        className="px-6 py-3 bg-blue-500 text-white rounded-full text-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="px-6 py-3 bg-blue-500 text-white rounded-full text-[30px] hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        Search
+        <IoMdSearch />
       </button>
       
       {/* Error Message */}

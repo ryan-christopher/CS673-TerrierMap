@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap, CircleMarker } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap, CircleMarker, ZoomControl } from "react-leaflet";
 import { LatLngTuple, Icon } from "leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -42,11 +42,12 @@ export default function Map({
   }, [classroomLocation, userLocation, defaultPosition]);
 
   return (
-    <div style={{ height: '500px', width: '100%' }}>
+    <div style={{ height: '100%', width: '100%' }}>
       <MapContainer
         preferCanvas={true}
         center={mapCenter}
         zoom={15}
+        zoomControl={false}
         scrollWheelZoom={true}
         style={{ height: "100%", width: "100%" }}
       >
@@ -54,6 +55,7 @@ export default function Map({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        <ZoomControl position="bottomright"/>
         <RecenterMap center={mapCenter} />
 
         {userLocation && (
