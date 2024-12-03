@@ -61,7 +61,7 @@ export default function ClassroomSearch({
   };
 
   return (
-    <div className="items-center space-x-4 inline-flex absolute left-[50%] translate-x-[-50%] top-[20px]">
+    <div className="flex">
       {/* Input for Building Code */}
       <input
         type="text"
@@ -69,7 +69,7 @@ export default function ClassroomSearch({
         value={buildingCode}
         onChange={(e) => setBuildingCode(e.target.value)}
         maxLength={3}
-        className="w-[200px] border rounded-full px-6 py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-[33vw] lg:w-[200px] mr-[10px] ml-[10px] border rounded-md px-2 py-2 lg:px-6 lg:py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
         {/* Room Number Input */}
 
@@ -78,19 +78,20 @@ export default function ClassroomSearch({
         placeholder="Room #"
         value={roomNumber}
         onChange={(e) => setRoomNumber(e.target.value)}
-        className="w-[200px] border rounded-full px-6 py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-[33vw] lg:w-[200px] border rounded-md px-2 py-2 lg:px-6 lg:py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       
       {/* Search Button */}
       <button
         onClick={handleSearch}
-        className="px-6 py-3 bg-blue-500 text-white rounded-full text-[30px] hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="px-2 py-2 lg:px-6 lg:py-3 ml-[10px] mr-[10px] bg-blue-500 text-white rounded-full text-[30px] hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <IoMdSearch />
       </button>
+
       
       {/* Error Message */}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="absolute text-red-500">{error}</p>}
     </div>
   );
 }

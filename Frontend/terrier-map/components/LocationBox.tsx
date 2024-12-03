@@ -30,8 +30,8 @@ const LocationBox = ({ location, setLocation }: { location: Location | null, set
   };
 
   return (
-    <div className="inline-flex absolute right-[20px] top-[20px]">
-      <button className="px-6 py-3 text-[30px] bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 active:bg-blue-800 transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={getLocation}>
+    <div className="">
+      <button className="px-2 py-2 lg:px-6 lg:py-3 text-[30px] bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 active:bg-blue-800 transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={getLocation}>
       <IoLocation />
       </button>
       {location ? (
@@ -39,7 +39,7 @@ const LocationBox = ({ location, setLocation }: { location: Location | null, set
           {/* Latitude: {location.latitude}, Longitude: {location.longitude} */}
         </p>
       ) : (
-        <p>{errorMessage}</p>
+        <p className='absolute'>{errorMessage}</p>
       )}
     </div>
   );

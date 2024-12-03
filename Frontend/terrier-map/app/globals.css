@@ -45,3 +45,18 @@ body {
     text-wrap: balance;
   }
 }
+
+
+.leaflet-routing-alternatives-container{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: white;
+}
+
+.leaflet-routing-alt{
+  max-height: 320px;
+  overflow-y: auto;
+  transition: all 0.2s ease;
+  width: 200px;
+}
