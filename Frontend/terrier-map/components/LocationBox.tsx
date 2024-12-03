@@ -35,13 +35,12 @@ const LocationBox = ({ location, setLocation }: { location: Location | null, set
       <IoLocation />
       </button>
       {location ? (
-
-  <p>
-    {/* Latitude: {location.latitude}, Longitude: {location.longitude} */}
-  </p>
-) : (
-  <p>{errorMessage}</p>
-)}
+        <p>
+          {/* Latitude: {location.latitude}, Longitude: {location.longitude} */}
+        </p>
+      ) : (
+        <p>{errorMessage}</p>
+      )}
     </div>
   );
 };
