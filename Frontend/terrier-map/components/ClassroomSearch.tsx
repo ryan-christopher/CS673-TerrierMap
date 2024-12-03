@@ -20,6 +20,34 @@ export default function ClassroomSearch({
   const [buildingCode, setBuildingCode] = useState('');
   const [roomNumber, setRoomNumber] = useState('');
   const [error, setError] = useState('');
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  const buildingCodes = ["CAS", "BRB", "CGS", "COM", "CPE", "EOP", "EPC","FLR", "GSU", "HAR", "IRB", "KCB", "MCS", "MET", "OSW", "PHO", "PRB", "PSY", "SAR", "SCI", "SHA", "SOC", "STH", "STO", "WED", "BLND", "ON", "CDS"];
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toUpperCase();
+    setBuildingCode(value);
+
+    if (!value) {
+      setSuggestions([]);
+      return;
+    }
+    
+    // Filter building codes for suggestions
+    if (value) {
+      const filtered = buildingCodes.filter((code) =>
+        code.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setSuggestions(filtered);
+    } else {
+      setSuggestions([]); 
+    }
+  };
+
+  const handleSuggestionClick = (code: string) => {
+    setBuildingCode(code); // Set the clicked suggestion as input
+    setSuggestions([]); // Hide suggestions
+  };
 
   const handleSearch = async () => {
     if (!buildingCode) {
@@ -63,16 +91,33 @@ export default function ClassroomSearch({
   return (
     <div className="flex">
       {/* Input for Building Code */}
+      <div className="relative">
       <input
         type="text"
         placeholder="Building Code"
         value={buildingCode}
-        onChange={(e) => setBuildingCode(e.target.value)}
+        onChange={handleInputChange}
         maxLength={3}
         className="w-[33vw] lg:w-[200px] mr-[10px] ml-[10px] border rounded-md px-2 py-2 lg:px-6 lg:py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-        {/* Room Number Input */}
 
+      {/* Suggestions Dropdown */}
+     {suggestions.length > 0 && (
+          <ul className="absolute z-10 bg-white border border-gray-300 rounded-lg mt-1 w-full max-h-40 overflow-y-auto">
+            {suggestions.map((code, index) => (
+              <li
+                key={index}
+                onClick={() => handleSuggestionClick(code)}
+                className="px-4 py-2 hover:bg-blue-500 hover:text-white cursor-pointer"
+              >
+                {code}
+              </li>
+            ))}
+          </ul>
+        )}
+    </div>
+
+        {/* Room Number Input */}
       <input
         type="text"
         placeholder="Room #"
