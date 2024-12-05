@@ -55,7 +55,7 @@ body {
 }
 
 .leaflet-routing-alt{
-  max-height: 320px;
+  max-height: 200px;
   overflow-y: auto;
   transition: all 0.2s ease;
   width: 200px;

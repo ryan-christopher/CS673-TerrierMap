@@ -17,7 +17,7 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import "leaflet-routing-machine";
 import { profile } from "console";
-require("lrm-graphhopper");
+
 
 const classroomIcon = new Icon({
   iconUrl:
@@ -63,6 +63,7 @@ export default function Map({
 
     if (classroomLocation) {
       setMapCenter(classroomLocation);
+      console.log(classroomLocation)
     } else if (userLocation) {
       setMapCenter(userLocation);
     } else {
@@ -80,15 +81,15 @@ export default function Map({
       routingControlRef.current = null;
     }
 
-    if (map && userLocation && defaultPosition) {
+    if (map && userLocation && classroomLocation) {
       const userLatLng = L.latLng(userLocation[0], userLocation[1]);
-      const classroomLatLng = L.latLng(defaultPosition[0], defaultPosition[1]);
+      const classroomLatLng = L.latLng(classroomLocation[0], classroomLocation[1]);
       console.log("User Location:", userLocation);
       console.log("Classroom Location:", classroomLocation);
 
       const routingControl = L.Routing.control({
         waypoints: [userLatLng, classroomLatLng],
-        routeWhileDragging: true,
+        routeWhileDragging: false,
         router: L.Routing.osrmv1({
         serviceUrl: "https://routing.openstreetmap.de/routed-foot/route/v1/"}),
         //router: L.Routing.graphHopper("a3d6cdb0-fd00-45d3-8bbd-9c9859b27a4d"),

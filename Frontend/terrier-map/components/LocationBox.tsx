@@ -31,15 +31,14 @@ const LocationBox = ({ location, setLocation }: { location: Location | null, set
 
   return (
     <div className="">
-      <button className="px-2 py-2 lg:px-6 lg:py-3 text-[30px] bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 active:bg-blue-800 transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={getLocation}>
-      <IoLocation />
-      </button>
       {location ? (
-        <p>
-          {/* Latitude: {location.latitude}, Longitude: {location.longitude} */}
-        </p>
+        <button className="px-2 py-2 lg:px-6 lg:py-3 text-[30px] bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 active:bg-green-800 transition duration-200 transform hover:scale-105 focus:outline-none" onClick={getLocation}>
+          <IoLocation />
+        </button>
       ) : (
-        <p className='absolute'>{errorMessage}</p>
+        <button className="px-2 py-2 lg:px-6 lg:py-3 text-[30px] bg-red-600 text-white rounded-full shadow-lg hover:bg-red-700 active:bg-red-800 transition duration-200 transform hover:scale-105 focus:outline-none" onClick={getLocation}>
+          <IoLocation />
+        </button>
       )}
     </div>
   );

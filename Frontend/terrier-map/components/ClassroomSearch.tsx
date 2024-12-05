@@ -103,12 +103,12 @@ export default function ClassroomSearch({
 
       {/* Suggestions Dropdown */}
      {suggestions.length > 0 && (
-          <ul className="absolute z-10 bg-white border border-gray-300 rounded-lg mt-1 w-full max-h-40 overflow-y-auto">
+          <ul className="absolute w-[33vw] lg:w-[200px] ml-[10px] z-10 bg-white border border-gray-300 rounded-lg mt-1 max-h-40 overflow-y-auto">
             {suggestions.map((code, index) => (
               <li
                 key={index}
                 onClick={() => handleSuggestionClick(code)}
-                className="px-4 py-2 hover:bg-blue-500 hover:text-white cursor-pointer"
+                className="px-4 py-2 hover:bg-gray-500 text-black hover:text-white cursor-pointer"
               >
                 {code}
               </li>
