@@ -16,8 +16,6 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-routing-machine";
-import { profile } from "console";
-
 
 const classroomIcon = new Icon({
   iconUrl:
@@ -49,27 +47,31 @@ export default function Map({
   const [mapCenter, setMapCenter] = useState<LatLngTuple>(defaultPosition);
   const mapRef = useRef<LeafletMap | null>(null);
   const routingControlRef = useRef<L.Routing.Control | null>(null);
-  const [currentMode, setCurrentMode] = useState<string>("foot");
+  const [currentMode, setCurrentMode] = useState<string>("routed-foot");
 
   useEffect(() => {
-    if (!mapRef.current) return;
-
-    const map = mapRef.current;
-
-    if (routingControlRef.current) {
-      map.removeControl(routingControlRef.current);
-      routingControlRef.current = null;
-    }
-
     if (classroomLocation) {
       setMapCenter(classroomLocation);
-      console.log(classroomLocation)
-    } else if (userLocation) {
+    }
+  }, [classroomLocation]);
+
+  useEffect(() => {
+    if (userLocation) {
       setMapCenter(userLocation);
-    } else {
+    }
+  }, [userLocation]);
+
+  useEffect(() => {
+    if (defaultPosition) {
       setMapCenter(defaultPosition);
     }
-  }, [classroomLocation, userLocation, defaultPosition]);
+  }, [defaultPosition]);
+
+  useEffect(() => {
+    if (currentMode) {
+      handleRouteDisplay();
+    }
+  }, [currentMode]);
 
   function handleRouteDisplay() {
     if (!mapRef.current) return;
@@ -83,17 +85,24 @@ export default function Map({
 
     if (map && userLocation && classroomLocation) {
       const userLatLng = L.latLng(userLocation[0], userLocation[1]);
-      const classroomLatLng = L.latLng(classroomLocation[0], classroomLocation[1]);
-      console.log("User Location:", userLocation);
-      console.log("Classroom Location:", classroomLocation);
+      const classroomLatLng = L.latLng(
+        classroomLocation[0],
+        classroomLocation[1]
+      );
 
       const routingControl = L.Routing.control({
         waypoints: [userLatLng, classroomLatLng],
-        routeWhileDragging: false,
+        routeWhileDragging: true,
         router: L.Routing.osrmv1({
-        serviceUrl: "https://routing.openstreetmap.de/routed-foot/route/v1/"}),
-        //router: L.Routing.graphHopper("a3d6cdb0-fd00-45d3-8bbd-9c9859b27a4d"),
-        //position: "bottomleft",
+          serviceUrl: `https://routing.openstreetmap.de/${currentMode}/route/v1/`,
+        }),
+        lineOptions: {
+          styles: [
+            { color: "white", opacity: 0.8, weight: 15 },
+            { color: "#bf6862", opacity: 0.6, weight: 8 },
+            { color: "black", opacity: 1, weight: 2, dashArray: "0 4 0" },
+          ],
+        },
       }).addTo(map);
       routingControlRef.current = routingControl;
     }
@@ -143,7 +152,7 @@ export default function Map({
           </Marker>
         )}
 
-        {!classroomLocation && (
+        {!classroomLocation && !userLocation && (
           <Marker position={defaultPosition}>
             <Popup>Default Location (Boston University)</Popup>
           </Marker>

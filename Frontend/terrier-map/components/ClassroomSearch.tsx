@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from 'react';
-import db from '../app/utils/firestore';
-import { doc, getDoc } from 'firebase/firestore';
-import { GeoPoint } from 'firebase/firestore';
+import { useState } from "react";
+import db from "../app/utils/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import { GeoPoint } from "firebase/firestore";
 import { IoMdSearch } from "react-icons/io";
-
 
 interface Location {
   latitude: number;
@@ -17,12 +16,41 @@ export default function ClassroomSearch({
 }: {
   setClassroomLocation: (location: Location | null) => void;
 }) {
-  const [buildingCode, setBuildingCode] = useState('');
-  const [roomNumber, setRoomNumber] = useState('');
-  const [error, setError] = useState('');
+  const [buildingCode, setBuildingCode] = useState("");
+  const [roomNumber, setRoomNumber] = useState("");
+  const [error, setError] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  const buildingCodes = ["CAS", "BRB", "CGS", "COM", "CPE", "EOP", "EPC","FLR", "GSU", "HAR", "IRB", "KCB", "MCS", "MET", "OSW", "PHO", "PRB", "PSY", "SAR", "SCI", "SHA", "SOC", "STH", "STO", "WED", "BLND", "ON", "CDS"];
+  const buildingCodes = [
+    "CAS",
+    "BRB",
+    "CGS",
+    "COM",
+    "CPE",
+    "EOP",
+    "EPC",
+    "FLR",
+    "GSU",
+    "HAR",
+    "IRB",
+    "KCB",
+    "MCS",
+    "MET",
+    "OSW",
+    "PHO",
+    "PRB",
+    "PSY",
+    "SAR",
+    "SCI",
+    "SHA",
+    "SOC",
+    "STH",
+    "STO",
+    "WED",
+    "BLND",
+    "ON",
+    "CDS",
+  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toUpperCase();
@@ -32,7 +60,7 @@ export default function ClassroomSearch({
       setSuggestions([]);
       return;
     }
-    
+
     // Filter building codes for suggestions
     if (value) {
       const filtered = buildingCodes.filter((code) =>
@@ -40,7 +68,7 @@ export default function ClassroomSearch({
       );
       setSuggestions(filtered);
     } else {
-      setSuggestions([]); 
+      setSuggestions([]);
     }
   };
 
@@ -54,23 +82,23 @@ export default function ClassroomSearch({
       setError("Please enter a building code.");
       return;
     }
-  
+
     try {
-      setError(''); // Clear any previous errors
-      const buildingDocRef = doc(db, 'classrooms', buildingCode.toUpperCase()); // Convert to uppercase to match document IDs
+      setError(""); // Clear any previous errors
+      const buildingDocRef = doc(db, "classrooms", buildingCode.toUpperCase()); // Convert to uppercase to match document IDs
       const buildingDocSnap = await getDoc(buildingDocRef);
-  
+
       if (buildingDocSnap.exists()) {
         const buildingData = buildingDocSnap.data();
         console.log("Building Data:", buildingData); // Log the entire document data
-  
+
         // Check if lat_long is a GeoPoint
         if (buildingData.lat_long instanceof GeoPoint) {
           const latitude = buildingData.lat_long.latitude;
           const longitude = buildingData.lat_long.longitude;
-  
+
           console.log("Latitude:", latitude, "Longitude:", longitude); // Log latitude and longitude values
-  
+
           // Set the classroom location
           setClassroomLocation({ latitude, longitude });
         } else {
@@ -92,17 +120,17 @@ export default function ClassroomSearch({
     <div className="flex">
       {/* Input for Building Code */}
       <div className="relative">
-      <input
-        type="text"
-        placeholder="Building Code"
-        value={buildingCode}
-        onChange={handleInputChange}
-        maxLength={3}
-        className="w-[33vw] lg:w-[200px] mr-[10px] ml-[10px] border rounded-md px-2 py-2 lg:px-6 lg:py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
+        <input
+          type="text"
+          placeholder="Building Code"
+          value={buildingCode}
+          onChange={handleInputChange}
+          maxLength={3}
+          className="w-[33vw] lg:w-[200px] mr-[10px] ml-[10px] border rounded-md px-2 py-2 lg:px-6 lg:py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-      {/* Suggestions Dropdown */}
-     {suggestions.length > 0 && (
+        {/* Suggestions Dropdown */}
+        {suggestions.length > 0 && (
           <ul className="absolute w-[33vw] lg:w-[200px] ml-[10px] z-10 bg-white border border-gray-300 rounded-lg mt-1 max-h-40 overflow-y-auto">
             {suggestions.map((code, index) => (
               <li
@@ -115,9 +143,9 @@ export default function ClassroomSearch({
             ))}
           </ul>
         )}
-    </div>
+      </div>
 
-        {/* Room Number Input */}
+      {/* Room Number Input */}
       <input
         type="text"
         placeholder="Room #"
@@ -125,7 +153,7 @@ export default function ClassroomSearch({
         onChange={(e) => setRoomNumber(e.target.value)}
         className="w-[33vw] lg:w-[200px] border rounded-md px-2 py-2 lg:px-6 lg:py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      
+
       {/* Search Button */}
       <button
         onClick={handleSearch}
@@ -134,10 +162,8 @@ export default function ClassroomSearch({
         <IoMdSearch />
       </button>
 
-      
       {/* Error Message */}
       {error && <p className="absolute text-red-500">{error}</p>}
     </div>
   );
 }
-

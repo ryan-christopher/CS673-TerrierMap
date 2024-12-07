@@ -1,17 +1,21 @@
-import React from 'react';
+import React from "react";
 
 const ModeToggle = ({ currentMode, onChange }) => {
   return (
     <div className="mode-toggle">
       <button
-        className={`toggle-button ${currentMode === 'foot' ? 'active' : ''}`}
-        onClick={() => onChange('foot')}
+        className={`toggle-button ${
+          currentMode === "routed-foot" ? "active" : ""
+        }`}
+        onClick={() => onChange("routed-foot")}
       >
-       🦶
+        🦶
       </button>
       <button
-        className={`toggle-button ${currentMode === 'car' ? 'active' : ''}`}
-        onClick={() => onChange('car')}
+        className={`toggle-button ${
+          currentMode === "routed-car" ? "active" : ""
+        }`}
+        onClick={() => onChange("routed-car")}
       >
         🚗
       </button>

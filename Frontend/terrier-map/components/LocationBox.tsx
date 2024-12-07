@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import { IoLocation } from "react-icons/io5";
 
 interface Location {
@@ -8,8 +8,14 @@ interface Location {
   longitude: number;
 }
 
-const LocationBox = ({ location, setLocation }: { location: Location | null, setLocation: (location: Location) => void }) => {
-  const [errorMessage, setErrorMessage] = useState('');
+const LocationBox = ({
+  location,
+  setLocation,
+}: {
+  location: Location | null;
+  setLocation: (location: Location) => void;
+}) => {
+  const [errorMessage, setErrorMessage] = useState("");
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -32,11 +38,17 @@ const LocationBox = ({ location, setLocation }: { location: Location | null, set
   return (
     <div className="">
       {location ? (
-        <button className="px-2 py-2 lg:px-6 lg:py-3 text-[30px] bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 active:bg-green-800 transition duration-200 transform hover:scale-105 focus:outline-none" onClick={getLocation}>
+        <button
+          className="px-2 py-2 lg:px-6 lg:py-3 text-[30px] bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 active:bg-green-800 transition duration-200 transform hover:scale-105 focus:outline-none"
+          onClick={getLocation}
+        >
           <IoLocation />
         </button>
       ) : (
-        <button className="px-2 py-2 lg:px-6 lg:py-3 text-[30px] bg-red-600 text-white rounded-full shadow-lg hover:bg-red-700 active:bg-red-800 transition duration-200 transform hover:scale-105 focus:outline-none" onClick={getLocation}>
+        <button
+          className="px-2 py-2 lg:px-6 lg:py-3 text-[30px] bg-red-600 text-white rounded-full shadow-lg hover:bg-red-700 active:bg-red-800 transition duration-200 transform hover:scale-105 focus:outline-none"
+          onClick={getLocation}
+        >
           <IoLocation />
         </button>
       )}
