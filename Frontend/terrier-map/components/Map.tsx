@@ -102,6 +102,8 @@ export default function Map({
             { color: "#bf6862", opacity: 0.6, weight: 8 },
             { color: "black", opacity: 1, weight: 2, dashArray: "0 4 0" },
           ],
+          extendToWaypoints: true, // Added property
+          missingRouteTolerance: 1, // Added property
         },
       }).addTo(map);
       routingControlRef.current = routingControl;
