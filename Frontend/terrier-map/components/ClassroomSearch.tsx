@@ -16,41 +16,19 @@ export default function ClassroomSearch({
 }: {
   setClassroomLocation: (location: Location | null) => void;
 }) {
+  {/* create const variables for buildingCode, roomNumber, error, and suggestions
+      that will be updated over time through useState  */}
   const [buildingCode, setBuildingCode] = useState("");
   const [roomNumber, setRoomNumber] = useState("");
   const [error, setError] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
+  {/* store list of building codes for auto-suggest */}
   const buildingCodes = [
-    "CAS",
-    "BRB",
-    "CGS",
-    "COM",
-    "CPE",
-    "EOP",
-    "EPC",
-    "FLR",
-    "GSU",
-    "HAR",
-    "IRB",
-    "KCB",
-    "MCS",
-    "MET",
-    "OSW",
-    "PHO",
-    "PRB",
-    "PSY",
-    "SAR",
-    "SCI",
-    "SHA",
-    "SOC",
-    "STH",
-    "STO",
-    "WED",
-    "BLND",
-    "ON",
-    "CDS",
-  ];
+    "CAS", "BRB","CGS", "COM","CPE","EOP","EPC","FLR","GSU","HAR","IRB","KCB",
+    "MCS","MET","OSW","PHO","PRB","PSY","SAR","SCI","SHA","SOC","STH","STO","WED",
+    "BLND","ON","CDS",
+ ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toUpperCase();

@@ -1,5 +1,5 @@
 import React from "react";
-
+{/* allow user to toggle between pedestrian route or driving route */}
 const ModeToggle = ({ currentMode, onChange }) => {
   return (
     <div className="mode-toggle">

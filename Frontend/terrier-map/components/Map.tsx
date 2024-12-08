@@ -1,24 +1,8 @@
-import {
-  useState,
-  useEffect,
-  useMemo,
-  useRef,
-  useCallback,
-  SetStateAction,
-} from "react";
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  useMap,
-  CircleMarker,
-  ZoomControl,
-} from "react-leaflet";
+import {useState, useEffect, useMemo, useRef, useCallback, SetStateAction} from "react";
+import {MapContainer, Marker, Popup, TileLayer, useMap, CircleMarker, ZoomControl} from "react-leaflet";
 import { LatLngTuple, Icon, Map as LeafletMap } from "leaflet";
 import L from "leaflet";
 import ModeToggle from "./ModeToggle";
-
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -100,6 +84,7 @@ export default function Map({
       const routingControl = L.Routing.control({
         waypoints: [userLatLng, classroomLatLng],
         routeWhileDragging: true,
+        plan: new L.Routing.Plan([userLatLng, classroomLatLng],{draggableWaypoints: false}),
         router: L.Routing.osrmv1({
           serviceUrl: `https://routing.openstreetmap.de/${currentMode}/route/v1/`,
         }),
@@ -110,9 +95,14 @@ export default function Map({
             { color: "black", opacity: 1, weight: 2, dashArray: "0 4 0" },
           ],
           extendToWaypoints: true,
+          addWaypoints: false,
           missingRouteTolerance: 1,
         },
       }).addTo(map);
+
+      
+
+    
 
       routingControlRef.current = routingControl;
     }
@@ -156,19 +146,19 @@ export default function Map({
         <RecenterMap center={mapCenter} />
 
         {userLocation && (
-          <Marker position={userLocation} icon={classroomIcon}>
+          <Marker position={userLocation} icon={classroomIcon} draggable={false}>
             <Popup>You are here!</Popup>
           </Marker>
         )}
 
         {classroomLocation && (
-          <Marker position={classroomLocation} icon={classroomIcon}>
+          <Marker position={classroomLocation} icon={classroomIcon} draggable={false}>
             <Popup>Classroom Location</Popup>
           </Marker>
         )}
 
         {!classroomLocation && !userLocation && (
-          <Marker position={defaultPosition}>
+          <Marker position={defaultPosition} draggable={false}>
             <Popup>Default Location (Boston University)</Popup>
           </Marker>
         )}
@@ -185,6 +175,7 @@ export default function Map({
             />
           ))}
       </MapContainer>
+      {/* custom CSS for Map component */}
       <style jsx>{`
         .button {
           position: absolute;
