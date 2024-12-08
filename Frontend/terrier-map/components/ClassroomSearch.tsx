@@ -20,7 +20,6 @@ export default function ClassroomSearch({
       that will be updated over time through useState  */}
   const [buildingCode, setBuildingCode] = useState("");
   const [roomNumber, setRoomNumber] = useState("");
-  const [error, setError] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   {/* store list of building codes for auto-suggest */}
@@ -57,12 +56,11 @@ export default function ClassroomSearch({
 
   const handleSearch = async () => {
     if (!buildingCode) {
-      setError("Please enter a building code.");
+      alert("Please enter a building code.");
       return;
     }
 
     try {
-      setError(""); // Clear any previous errors
       const buildingDocRef = doc(db, "classrooms", buildingCode.toUpperCase()); // Convert to uppercase to match document IDs
       const buildingDocSnap = await getDoc(buildingDocRef);
 
@@ -80,16 +78,16 @@ export default function ClassroomSearch({
           // Set the classroom location
           setClassroomLocation({ latitude, longitude });
         } else {
-          setError("Location data not found for this building code.");
+          alert("Location data not found for this building code.");
           setClassroomLocation(null);
         }
       } else {
-        setError("Building code not found.");
+        alert("Building code not found.");
         setClassroomLocation(null);
       }
     } catch (err) {
       console.error("Error fetching document:", err);
-      setError("An error occurred while fetching the data.");
+      alert("An error occurred while fetching the data.");
       setClassroomLocation(null);
     }
   };
@@ -140,8 +138,6 @@ export default function ClassroomSearch({
         <IoMdSearch />
       </button>
 
-      {/* Error Message */}
-      {error && <p className="absolute text-red-500">{error}</p>}
     </div>
   );
 }
