@@ -1,4 +1,11 @@
-import { useState, useEffect, useMemo, useRef, SetStateAction } from "react";
+import {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+  SetStateAction,
+} from "react";
 import {
   MapContainer,
   Marker,
@@ -36,9 +43,15 @@ function RecenterMap({ center }: { center: LatLngTuple }) {
 export default function Map({
   userLocation,
   classroomLocation,
+  ParkingLocation,
+  parkingVisible,
+  setParkingVisible,
 }: {
   userLocation: LatLngTuple | null;
   classroomLocation: LatLngTuple | null;
+  ParkingLocation: LatLngTuple[] | null;
+  parkingVisible: boolean | null;
+  setParkingVisible: (visible: boolean) => void;
 }) {
   const defaultPosition = useMemo(
     () => [42.350876, -71.106918] as LatLngTuple,
@@ -67,13 +80,7 @@ export default function Map({
     }
   }, [defaultPosition]);
 
-  useEffect(() => {
-    if (currentMode) {
-      handleRouteDisplay();
-    }
-  }, [currentMode]);
-
-  function handleRouteDisplay() {
+  const handleRouteDisplay = useCallback(() => {
     if (!mapRef.current) return;
 
     const map = mapRef.current;
@@ -102,13 +109,20 @@ export default function Map({
             { color: "#bf6862", opacity: 0.6, weight: 8 },
             { color: "black", opacity: 1, weight: 2, dashArray: "0 4 0" },
           ],
-          extendToWaypoints: true, // Added property
-          missingRouteTolerance: 1, // Added property
+          extendToWaypoints: true,
+          missingRouteTolerance: 1,
         },
       }).addTo(map);
+
       routingControlRef.current = routingControl;
     }
-  }
+  }, [classroomLocation, currentMode, userLocation]);
+
+  useEffect(() => {
+    if (currentMode) {
+      handleRouteDisplay();
+    }
+  }, [currentMode, handleRouteDisplay]);
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
@@ -121,7 +135,13 @@ export default function Map({
         scrollWheelZoom={true}
         style={{ height: "100%", width: "100%", color: "black" }}
       >
-        <button className="go-button" onClick={handleRouteDisplay}>
+        <button
+          className={`button margined ${parkingVisible ? "active" : ""}`}
+          onClick={() => setParkingVisible(!parkingVisible)}
+        >
+          🅿
+        </button>
+        <button className="button" onClick={handleRouteDisplay}>
           Go
         </button>
         <ModeToggle
@@ -136,14 +156,7 @@ export default function Map({
         <RecenterMap center={mapCenter} />
 
         {userLocation && (
-          <Marker
-            position={userLocation}
-            // radius={8}
-            // fillColor="blue"
-            // color="blue"
-            // fillOpacity={0.3}
-            icon={classroomIcon}
-          >
+          <Marker position={userLocation} icon={classroomIcon}>
             <Popup>You are here!</Popup>
           </Marker>
         )}
@@ -159,9 +172,21 @@ export default function Map({
             <Popup>Default Location (Boston University)</Popup>
           </Marker>
         )}
+        {parkingVisible &&
+          ParkingLocation &&
+          ParkingLocation.map((ParkingLoc, index) => (
+            <CircleMarker
+              key={`parking-${index}`}
+              center={ParkingLoc}
+              radius={10}
+              fillColor="white"
+              color="#bf6862"
+              fillOpacity={0.6}
+            />
+          ))}
       </MapContainer>
       <style jsx>{`
-        .go-button {
+        .button {
           position: absolute;
           bottom: 220px;
           right: 10px;
@@ -175,9 +200,16 @@ export default function Map({
           transition: background-color 0.3s, color 0.3s;
           z-index: 400;
         }
-        .go-button:hover {
+        .button:hover {
           background-color: #bf6862;
           border: 2px solid #bf6862;
+          color: white;
+        }
+        .margined {
+          bottom: 300px;
+        }
+        .active {
+          background-color: #bf6862;
           color: white;
         }
       `}</style>
