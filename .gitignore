@@ -65,6 +65,9 @@ node_modules/
 # dotenv environment variables file
 .env
 
+# Admin SDK configuration file for testing
+Tests/Terriermap-firebase-adminsdk.json
+
 # dataconnect generated files
 .dataconnect
 .DS_Store
