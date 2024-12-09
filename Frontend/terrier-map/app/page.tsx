@@ -7,6 +7,7 @@ import { LatLngTuple } from "leaflet";
 import LocationBox from "../components/LocationBox";
 import ClassroomSearch from "../components/ClassroomSearch";
 import ParkingLocations from "../components/ParkingLocations";
+import RestaurantLocations from "../components/RestaurantLocations";
 
 interface Location {
   latitude: number;
@@ -27,7 +28,13 @@ export default function Home() {
   const [ParkingLocation, setParkingLocation] = useState<LatLngTuple[] | null>(
     null
   );
+  const [restaurantLocations, setRestaurantLocations] = useState<
+    LatLngTuple[] | null
+  >(null);
   const [parkingVisible, setParkingVisible] = useState<boolean | null>(null);
+  const [restaurantVisible, setRestaurantVisible] = useState<boolean | null>(
+    null
+  );
 
   return (
     <div className="">
@@ -46,8 +53,11 @@ export default function Home() {
                 : null
             }
             ParkingLocation={ParkingLocation}
+            RestaurantLocation={restaurantLocations}
             parkingVisible={parkingVisible}
             setParkingVisible={setParkingVisible}
+            restaurantVisible={restaurantVisible}
+            setRestaurantVisible={setRestaurantVisible}
           />
         </div>
 
@@ -91,11 +101,20 @@ export default function Home() {
               }}
             />
 
-            {/* Classroom Search Component */}
+            {/* Parking Component */}
             <ParkingLocations
               setParkingLocations={(location) => {
                 if (location) {
                   setParkingLocation(location);
+                }
+              }}
+            />
+
+            {/* Restaurant Component */}
+            <RestaurantLocations
+              setRestaurantLocations={(location) => {
+                if (location) {
+                  setRestaurantLocations(location);
                 }
               }}
             />

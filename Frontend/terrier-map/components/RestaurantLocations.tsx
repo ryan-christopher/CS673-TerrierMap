@@ -6,24 +6,24 @@ import { LatLngTuple } from "leaflet";
 import { collection, getDocs } from "firebase/firestore";
 import { GeoPoint } from "firebase/firestore";
 
-export default function ParkingLocations({
-  setParkingLocations,
+export default function RestaurantLocations({
+  setRestaurantLocations,
 }: {
-  setParkingLocations: (locations: LatLngTuple[]) => void;
+  setRestaurantLocations: (locations: LatLngTuple[]) => void;
 }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchParkingLocations = async () => {
+    const fetchRestaurantLocations = async () => {
       try {
         setError("");
-        const parkingCollectionRef = collection(db, "parking");
-        const parkingSnapshot = await getDocs(parkingCollectionRef);
+        const restaurantCollectionRef = collection(db, "foodPlaces");
+        const restaurantSnapshot = await getDocs(restaurantCollectionRef);
 
-        // console.log("parkingSnapshot : ", parkingSnapshot);
+        // console.log("restaurantSnapshot : ", restaurantSnapshot);
 
-        const locations: LatLngTuple[] = parkingSnapshot.docs
+        const locations: LatLngTuple[] = restaurantSnapshot.docs
           .map((doc) => {
             const data = doc.data();
 
@@ -37,19 +37,19 @@ export default function ParkingLocations({
           })
           .filter((location) => location !== null) as LatLngTuple[];
 
-        setParkingLocations(locations);
+        setRestaurantLocations(locations);
       } catch (err) {
-        console.error("Error fetching parking locations:", err);
-        setError("Failed to fetch parking locations.");
+        console.error("Error fetching restaurant locations:", err);
+        setError("Failed to fetch restaurant locations.");
       } finally {
         setLoading(false);
       }
     };
 
     if (loading) {
-      fetchParkingLocations();
+      fetchRestaurantLocations();
     }
-  }, [loading, setParkingLocations]);
+  }, [loading, setRestaurantLocations]);
 
   return <></>;
 }
