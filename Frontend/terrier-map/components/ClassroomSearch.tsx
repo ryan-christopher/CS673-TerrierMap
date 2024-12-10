@@ -72,6 +72,14 @@ export default function ClassroomSearch({
         if (buildingData.lat_long instanceof GeoPoint) {
           const latitude = buildingData.lat_long.latitude;
           const longitude = buildingData.lat_long.longitude;
+          if (buildingData.rooms){
+            if (!buildingData.rooms.includes(roomNumber)){
+              alert("No room number match found.")
+            }
+          }
+          else if (!buildingData.rooms && roomNumber){
+            alert("No room number match found.")
+          }
 
           console.log("Latitude:", latitude, "Longitude:", longitude); // Log latitude and longitude values
 
