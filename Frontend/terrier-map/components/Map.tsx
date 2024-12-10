@@ -1,20 +1,5 @@
-import {
-  useState,
-  useEffect,
-  useMemo,
-  useRef,
-  useCallback,
-  SetStateAction,
-} from "react";
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  useMap,
-  CircleMarker,
-  ZoomControl,
-} from "react-leaflet";
+import {useState, useEffect, useMemo, useRef, useCallback, SetStateAction} from "react";
+import {MapContainer, Marker, Popup, TileLayer,useMap, ZoomControl} from "react-leaflet";
 import { LatLngTuple, Icon, Map as LeafletMap } from "leaflet";
 import L from "leaflet";
 import ModeToggle from "./ModeToggle";
@@ -100,6 +85,7 @@ export default function Map({
       const routingControl = L.Routing.control({
         waypoints: [userLatLng, classroomLatLng],
         routeWhileDragging: true,
+        plan: new L.Routing.Plan([userLatLng, classroomLatLng], {draggableWaypoints: false}),
         router: L.Routing.osrmv1({
           serviceUrl: `https://routing.openstreetmap.de/${currentMode}/route/v1/`,
         }),
@@ -110,6 +96,7 @@ export default function Map({
             { color: "black", opacity: 1, weight: 2, dashArray: "0 4 0" },
           ],
           extendToWaypoints: true,
+          addWaypoints: false,
           missingRouteTolerance: 1,
         },
       }).addTo(map);
@@ -126,40 +113,9 @@ export default function Map({
 
   useEffect(() => {
     if (classroomLocation && !parkingVisible && !restaurantVisible) {
-      // let mostRecentLat = localStorage.getItem("mostRecentLat");
-      // let mostRecentLon = localStorage.getItem("mostRecentLon");
-
-      // setMapCenter([parseFloat(localStorage.getItem("mostRecentLat")), parseFloat(mostRecentLon)]);
       setMapCenter(classroomLocation);
     }
   }, [classroomLocation, parkingVisible, restaurantVisible]);
-
-  // useEffect(() => {
-  //   if (mapCenter != userLocation) {
-  //     console.log("userLoccc1");
-
-  //     if (userLocation && !parkingVisible && !restaurantVisible) {
-  //       console.log("userLoccc2");
-
-  //       setMapCenter(userLocation);
-  //     }
-  //   }
-  //   if (mapCenter != classroomLocation) {
-  //     console.log("classLoccc1");
-
-  //     if (classroomLocation && !parkingVisible && !restaurantVisible) {
-  //       console.log("classLoccc2");
-
-  //       setMapCenter(classroomLocation);
-  //     }
-  //   }
-  // }, [classroomLocation, userLocation, parkingVisible, restaurantVisible]);
-
-  // useEffect(() => {
-  //   if (defaultPosition && (parkingVisible || restaurantVisible)) {
-  //     setMapCenter(defaultPosition);
-  //   }
-  // }, [defaultPosition, parkingVisible, restaurantVisible]);
 
   useEffect(() => {
     handleRouteDisplay();
@@ -189,7 +145,7 @@ export default function Map({
           🍴
         </button>
         <button
-          className={`button parkingButton ${parkingVisible ? "active" : ""}`}
+          className={`button w-[38px] parkingButton ${parkingVisible ? "active" : ""}`}
           onClick={() => {
             setParkingVisible(!parkingVisible);
             setMapCenter(defaultPosition); // Center to default when toggling parking visibility
@@ -201,14 +157,25 @@ export default function Map({
         <button
           className="button"
           onClick={() => {
-            setShowRoute(true);
-            if (userLocation) {
+            if (userLocation && classroomLocation){
+              setShowRoute(true);
+            }
+            else if (userLocation && !classroomLocation) {
               setMapCenter(userLocation); // Center to default when starting route
+              alert("Please search for a classroom.")
+            }
+            else if (classroomLocation && !userLocation) {
+              setMapCenter(classroomLocation); // Center to default when starting route
+              alert("Please share your location.")
+            }
+            else{
+              alert("Please share your location and search for a classroom.")
             }
           }}
         >
           Go
         </button>
+        {/* allow user to toggle between pedestrian route or driving route */}
         <ModeToggle
           currentMode={currentMode}
           onChange={(Mode: SetStateAction<string>) => setCurrentMode(Mode)}
@@ -224,7 +191,7 @@ export default function Map({
           <Marker
             position={userLocation}
             icon={classroomIcon}
-            // draggable={false}
+            draggable={false}
           >
             <Popup>You are here!</Popup>
           </Marker>
@@ -234,7 +201,7 @@ export default function Map({
           <Marker
             position={classroomLocation}
             icon={classroomIcon}
-            // draggable={false}
+            draggable={false}
           >
             <Popup>Classroom Location</Popup>
           </Marker>
@@ -243,7 +210,7 @@ export default function Map({
         {!classroomLocation && !userLocation && (
           <Marker
             position={defaultPosition}
-            // draggable={false}
+            draggable={false}
           >
             <Popup>Default Location (Boston University)</Popup>
           </Marker>

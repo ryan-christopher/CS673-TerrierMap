@@ -11,18 +11,14 @@ export default function RestaurantLocations({
 }: {
   setRestaurantLocations: (locations: LatLngTuple[]) => void;
 }) {
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRestaurantLocations = async () => {
       try {
-        setError("");
+
         const restaurantCollectionRef = collection(db, "foodPlaces");
         const restaurantSnapshot = await getDocs(restaurantCollectionRef);
-
-        // console.log("restaurantSnapshot : ", restaurantSnapshot);
-
         const locations: LatLngTuple[] = restaurantSnapshot.docs
           .map((doc) => {
             const data = doc.data();
@@ -36,11 +32,10 @@ export default function RestaurantLocations({
             return null;
           })
           .filter((location) => location !== null) as LatLngTuple[];
-
+          
         setRestaurantLocations(locations);
       } catch (err) {
         console.error("Error fetching restaurant locations:", err);
-        setError("Failed to fetch restaurant locations.");
       } finally {
         setLoading(false);
       }
