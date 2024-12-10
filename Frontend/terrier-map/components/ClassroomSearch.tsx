@@ -73,7 +73,7 @@ export default function ClassroomSearch({
           const latitude = buildingData.lat_long.latitude;
           const longitude = buildingData.lat_long.longitude;
           if (buildingData.rooms){
-            if (!buildingData.rooms.includes(roomNumber)){
+            if (roomNumber.length > 0 && !buildingData.rooms.includes(roomNumber)){
               alert("No room number match found.")
             }
           }
