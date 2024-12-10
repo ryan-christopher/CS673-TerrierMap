@@ -38,8 +38,13 @@ export default function Home() {
 
   return (
     <div className="">
-      <main className="w-full h-screen">
-        <div className="absolute top-0 z-0 left-0 h-screen w-screen">
+      <main className="w-full h-screen" role="main">
+        <div 
+          className="absolute top-0 z-0 left-0 h-screen w-screen"
+          role="region"
+          aria-label="Interactive map"
+          tabIndex={0}
+        >
           {/* Map component with user and classroom location props */}
           <Map
             userLocation={
@@ -62,7 +67,10 @@ export default function Home() {
         </div>
 
         {/* Title with responsive font size and centered alignment */}
-        <div className="absolute top-0 left-0 z-10 w-full h-[100px] bg-[#0000008a] backdrop-blur-sm">
+        <div 
+          className="absolute top-0 left-0 z-10 w-full h-[100px] bg-[#0000008a] backdrop-blur-sm"
+          role="banner"
+        >
           <div className="lg:absolute">
             <Image
               src="/Logo.png"
@@ -71,12 +79,18 @@ export default function Home() {
               alt="TerrierMap logo of a Boston Terrier dog in front of a topographical map of Boston."
               className="lg:ml-[10px] lg:mt-[10px] p-0 inline fixed top-0 lg:w-[80px] lg:h-[80px]"
             />
-            <h1 className="font-['Caprasimo'] text-[30px] sm:text-[30px] lg:text-[50px] mt-[3px] lg:top-[7px] lg:ml-[100px] text-center lg:absolute">
+            <h1 
+              className="font-['Caprasimo'] text-[30px] sm:text-[30px] lg:text-[50px] mt-[3px] lg:top-[7px] lg:ml-[100px] text-center lg:absolute"
+              tabIndex={0}
+            >
               TerrierMap
             </h1>
           </div>
-          <div className="inline-flex justify-center w-full lg:justify-end lg:mt-[20px] lg:pr-[50px]">
-            {/* Classroom Search Component */}
+          <div 
+            className="inline-flex justify-center w-full lg:justify-end lg:mt-[20px] lg:pr-[50px]"
+            role="navigation"
+            aria-label="Navigation controls"
+          >
             <ClassroomSearch
               setClassroomLocation={(location) => {
                 if (location) {
@@ -86,6 +100,7 @@ export default function Home() {
                   });
                 }
               }}
+              aria-label="Classroom search input"
             />
 
             {/* LocationBox component to get current user location */}
@@ -99,6 +114,7 @@ export default function Home() {
                   });
                 }
               }}
+              aria-label="Current location input"
             />
 
             {/* Parking Component */}
@@ -108,6 +124,7 @@ export default function Home() {
                   setParkingLocation(location);
                 }
               }}
+              aria-label="Parking locations"
             />
 
             {/* Restaurant Component */}
@@ -117,12 +134,18 @@ export default function Home() {
                   setRestaurantLocations(location);
                 }
               }}
+              aria-label="Restaurant locations"
             />
           </div>
         </div>
       </main>
 
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+      <footer
+        className="row-start-3 flex gap-6 flex-wrap items-center justify-center"
+        // role="contentinfo"
+        // tabIndex={0}
+        // aria-label="Footer with contributor names"
+      >
         <h3 className="font-['Barlow']">
           By: Ryan Christopher, Jasmine Hughes, Siddhraj Parmar, and Misael
           Gared

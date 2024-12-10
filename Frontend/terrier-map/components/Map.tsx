@@ -122,7 +122,18 @@ export default function Map({
   }, [handleRouteDisplay]);
 
   return (
-    <div style={{ height: "100%", width: "100%" }}>
+    <div
+      style={{ height: "100%", width: "100%" }}
+      role="application"
+      aria-label="Interactive map showing user location, classroom location, parking, and restaurant markers"
+    >
+      <a
+        href="#map-content"
+        className="sr-only focus:not-sr-only"
+        aria-label="Skip to map content"
+          >
+        Skip to map content
+      </a>
       <MapContainer
         ref={mapRef}
         preferCanvas={true}
@@ -131,24 +142,48 @@ export default function Map({
         zoomControl={false}
         scrollWheelZoom={true}
         style={{ height: "100%", width: "100%", color: "black" }}
+        aria-labelledby="map-content"
       >
+        
         <button
           className={`button restaurantButton ${
             restaurantVisible ? "active" : ""
           }`}
+          tabIndex={0}
+          aria-label={
+            restaurantVisible
+              ? "Hide restaurant locations"
+              : "Show restaurant locations"
+          }
           style={{ color: "black" }}
           onClick={() => {
             setRestaurantVisible(!restaurantVisible);
             setMapCenter(defaultPosition); // Center to default when toggling restaurant visibility
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setRestaurantVisible(!restaurantVisible);
+              setMapCenter(defaultPosition);
+            }
           }}
         >
           🍴
         </button>
         <button
           className={`button w-[38px] parkingButton ${parkingVisible ? "active" : ""}`}
+          tabIndex={0}
+          aria-label={
+            parkingVisible ? "Hide parking locations" : "Show parking locations"
+          }
           onClick={() => {
             setParkingVisible(!parkingVisible);
             setMapCenter(defaultPosition); // Center to default when toggling parking visibility
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setParkingVisible(!parkingVisible);
+              setMapCenter(defaultPosition);
+            }
           }}
         >
           🅿
@@ -156,6 +191,8 @@ export default function Map({
 
         <button
           className="button"
+          tabIndex={0}
+          aria-label="Display route from user location to classroom location"
           onClick={() => {
             if (userLocation && classroomLocation){
               setShowRoute(true);
@@ -170,6 +207,22 @@ export default function Map({
             }
             else{
               alert("Please share your location and search for a classroom.")
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setShowRoute(true);
+              if (userLocation) {
+                setMapCenter(userLocation);
+              }
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setShowRoute(true);
+              if (userLocation) {
+                setMapCenter(userLocation);
+              }
             }
           }}
         >
