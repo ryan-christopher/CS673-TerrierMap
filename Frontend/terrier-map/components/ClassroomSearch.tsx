@@ -124,7 +124,7 @@ export default function ClassroomSearch({
   return (
     <div className="flex" role="search" aria-label="Search for a classroom">
       {/* Input for Building Code */}
-      <div className="relative">
+      <div className="relative" role="combobox" aria-expanded={suggestions.length > 0}>
         <label htmlFor="buildingCode" className="sr-only">
           Building Code
         </label>
@@ -138,17 +138,16 @@ export default function ClassroomSearch({
           maxLength={3}
           aria-autocomplete="list"
           aria-controls="building-suggestions"
-          aria-expanded={suggestions.length > 0}
-          aria-haspopup="listbox"
           className="w-[33vw] lg:w-[200px] mr-[10px] ml-[10px] border rounded-md px-2 py-2 lg:px-6 lg:py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+
 
         {/* Suggestions Dropdown */}
         {suggestions.length > 0 && (
           <ul
             id="building-suggestions"
             role="listbox"
-            onKeyDown={handleKeyDown}
+            // onKeyDown={handleKeyDown}
             className="absolute w-[33vw] lg:w-[200px] ml-[10px] z-10 bg-white border border-gray-300 rounded-lg mt-1 max-h-40 overflow-y-auto"
           >
             {suggestions.map((code, index) => (

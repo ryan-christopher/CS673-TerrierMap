@@ -209,14 +209,7 @@ export default function Map({
               alert("Please share your location and search for a classroom.")
             }
           }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              setShowRoute(true);
-              if (userLocation) {
-                setMapCenter(userLocation);
-              }
-            }
-          }}
+          
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               setShowRoute(true);
