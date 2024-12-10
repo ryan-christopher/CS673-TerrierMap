@@ -26,14 +26,38 @@ export default function ClassroomSearch({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1); // Track the focused suggestion
 
-
   {
     /* store list of building codes for auto-suggest */
   }
   const buildingCodes = [
-    "CAS", "BRB", "CGS", "COM", "CPE", "EOP", "EPC", "FLR", "GSU", "HAR", "IRB", 
-    "KCB", "MCS", "MET", "OSW", "PHO", "PRB", "PSY", "SAR", "SCI", "SHA", "SOC",
-    "STH", "STO", "WED", "BLND", "ON", "CDS"
+    "CAS",
+    "BRB",
+    "CGS",
+    "COM",
+    "CPE",
+    "EOP",
+    "EPC",
+    "FLR",
+    "GSU",
+    "HAR",
+    "IRB",
+    "KCB",
+    "MCS",
+    "MET",
+    "OSW",
+    "PHO",
+    "PRB",
+    "PSY",
+    "SAR",
+    "SCI",
+    "SHA",
+    "SOC",
+    "STH",
+    "STO",
+    "WED",
+    "BLND",
+    "ON",
+    "CDS",
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +65,6 @@ export default function ClassroomSearch({
     setBuildingCode(value);
     setError(""); // Clear error when input changes
     setFocusedIndex(-1); // Reset focus when input changes
-
 
     if (!value) {
       setSuggestions([]);
@@ -66,14 +89,14 @@ export default function ClassroomSearch({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (suggestions.length === 0) return;
-  
+
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setFocusedIndex((prevIndex) => (prevIndex + 1) % suggestions.length);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setFocusedIndex((prevIndex) =>
-        (prevIndex - 1 + suggestions.length) % suggestions.length
+      setFocusedIndex(
+        (prevIndex) => (prevIndex - 1 + suggestions.length) % suggestions.length
       );
     } else if (e.key === "Enter" && focusedIndex >= 0) {
       e.preventDefault();
@@ -94,7 +117,6 @@ export default function ClassroomSearch({
 
       if (buildingDocSnap.exists()) {
         const buildingData = buildingDocSnap.data();
-        console.log("Building Data:", buildingData); // Log the entire document data
 
         // Check if lat_long is a GeoPoint
         if (buildingData.lat_long instanceof GeoPoint) {
@@ -124,7 +146,11 @@ export default function ClassroomSearch({
   return (
     <div className="flex" role="search" aria-label="Search for a classroom">
       {/* Input for Building Code */}
-      <div className="relative" role="combobox" aria-expanded={suggestions.length > 0}>
+      <div
+        className="relative"
+        role="combobox"
+        aria-expanded={suggestions.length > 0}
+      >
         <label htmlFor="buildingCode" className="sr-only">
           Building Code
         </label>
@@ -140,7 +166,6 @@ export default function ClassroomSearch({
           aria-controls="building-suggestions"
           className="w-[33vw] lg:w-[200px] mr-[10px] ml-[10px] border rounded-md px-2 py-2 lg:px-6 lg:py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-
 
         {/* Suggestions Dropdown */}
         {suggestions.length > 0 && (
@@ -170,8 +195,8 @@ export default function ClassroomSearch({
         )}
       </div>
 
- {/* Room Number Input */}
- <label htmlFor="roomNumber" className="sr-only">
+      {/* Room Number Input */}
+      <label htmlFor="roomNumber" className="sr-only">
         Room Number
       </label>
       <input

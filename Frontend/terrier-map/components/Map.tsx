@@ -1,5 +1,19 @@
-import {useState, useEffect, useMemo, useRef, useCallback, SetStateAction} from "react";
-import {MapContainer, Marker, Popup, TileLayer,useMap, ZoomControl} from "react-leaflet";
+import {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+  SetStateAction,
+} from "react";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMap,
+  ZoomControl,
+} from "react-leaflet";
 import { LatLngTuple, Icon, Map as LeafletMap } from "leaflet";
 import L from "leaflet";
 import ModeToggle from "./ModeToggle";
@@ -41,6 +55,10 @@ export default function Map({
   classroomLocation,
   RestaurantLocation,
   ParkingLocation,
+
+  mapCenter, // added 12/10
+  setMapCenter, // added 12/10
+
   parkingVisible,
   restaurantVisible,
   setRestaurantVisible,
@@ -52,6 +70,10 @@ export default function Map({
   ParkingLocation: LatLngTuple[] | null;
   parkingVisible: boolean | null;
   restaurantVisible: boolean | null;
+
+  mapCenter: LatLngTuple; // added 12/10
+  setMapCenter: (location: LatLngTuple) => void; // added 12/10
+
   setRestaurantVisible: (visible: boolean) => void;
   setParkingVisible: (visible: boolean) => void;
 }) {
@@ -59,7 +81,7 @@ export default function Map({
     () => [42.350876, -71.106918] as LatLngTuple,
     []
   );
-  const [mapCenter, setMapCenter] = useState<LatLngTuple>(defaultPosition);
+  // const [mapCenter, setMapCenter] = useState<LatLngTuple>(defaultPosition); // added 12/10
   const mapRef = useRef<LeafletMap | null>(null);
   const routingControlRef = useRef<L.Routing.Control | null>(null);
   const [currentMode, setCurrentMode] = useState<string>("routed-foot");
@@ -85,7 +107,9 @@ export default function Map({
       const routingControl = L.Routing.control({
         waypoints: [userLatLng, classroomLatLng],
         routeWhileDragging: true,
-        plan: new L.Routing.Plan([userLatLng, classroomLatLng], {draggableWaypoints: false}),
+        plan: new L.Routing.Plan([userLatLng, classroomLatLng], {
+          draggableWaypoints: false,
+        }),
         router: L.Routing.osrmv1({
           serviceUrl: `https://routing.openstreetmap.de/${currentMode}/route/v1/`,
         }),
@@ -106,16 +130,16 @@ export default function Map({
 
   // Remove automatic centering logic for toggling buttons
   useEffect(() => {
-    if (userLocation && !parkingVisible && !restaurantVisible) {
-      setMapCenter(userLocation);
+    if (!parkingVisible && !restaurantVisible) {
+      if (userLocation) {
+        setMapCenter(userLocation);
+      } else if (classroomLocation) {
+        setMapCenter(classroomLocation);
+      } else {
+        setMapCenter(defaultPosition);
+      }
     }
-  }, [userLocation, parkingVisible, restaurantVisible]);
-
-  useEffect(() => {
-    if (classroomLocation && !parkingVisible && !restaurantVisible) {
-      setMapCenter(classroomLocation);
-    }
-  }, [classroomLocation, parkingVisible, restaurantVisible]);
+  }, [parkingVisible, restaurantVisible]);
 
   useEffect(() => {
     handleRouteDisplay();
@@ -131,7 +155,7 @@ export default function Map({
         href="#map-content"
         className="sr-only focus:not-sr-only"
         aria-label="Skip to map content"
-          >
+      >
         Skip to map content
       </a>
       <MapContainer
@@ -144,7 +168,6 @@ export default function Map({
         style={{ height: "100%", width: "100%", color: "black" }}
         aria-labelledby="map-content"
       >
-        
         <button
           className={`button restaurantButton ${
             restaurantVisible ? "active" : ""
@@ -170,7 +193,9 @@ export default function Map({
           🍴
         </button>
         <button
-          className={`button w-[38px] parkingButton ${parkingVisible ? "active" : ""}`}
+          className={`button w-[38px] parkingButton ${
+            parkingVisible ? "active" : ""
+          }`}
           tabIndex={0}
           aria-label={
             parkingVisible ? "Hide parking locations" : "Show parking locations"
@@ -194,22 +219,19 @@ export default function Map({
           tabIndex={0}
           aria-label="Display route from user location to classroom location"
           onClick={() => {
-            if (userLocation && classroomLocation){
+            if (userLocation && classroomLocation) {
               setShowRoute(true);
-            }
-            else if (userLocation && !classroomLocation) {
+              setMapCenter(userLocation);
+            } else if (userLocation && !classroomLocation) {
               setMapCenter(userLocation); // Center to default when starting route
-              alert("Please search for a classroom.")
-            }
-            else if (classroomLocation && !userLocation) {
+              alert("Please search for a classroom.");
+            } else if (classroomLocation && !userLocation) {
               setMapCenter(classroomLocation); // Center to default when starting route
-              alert("Please share your location.")
-            }
-            else{
-              alert("Please share your location and search for a classroom.")
+              alert("Please share your location.");
+            } else {
+              alert("Please share your location and search for a classroom.");
             }
           }}
-          
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               setShowRoute(true);
@@ -254,10 +276,7 @@ export default function Map({
         )}
 
         {!classroomLocation && !userLocation && (
-          <Marker
-            position={defaultPosition}
-            draggable={false}
-          >
+          <Marker position={defaultPosition} draggable={false}>
             <Popup>Default Location (Boston University)</Popup>
           </Marker>
         )}

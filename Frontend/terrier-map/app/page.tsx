@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { LatLngTuple } from "leaflet";
 import LocationBox from "../components/LocationBox";
 import ClassroomSearch from "../components/ClassroomSearch";
@@ -21,6 +21,12 @@ const Map = dynamic(() => import("../components/Map"), {
 });
 
 export default function Home() {
+  const defaultPosition = useMemo(
+    () => [42.350876, -71.106918] as LatLngTuple,
+    []
+  ); // added 12/10
+  const [mapCenter, setMapCenter] = useState<LatLngTuple>(defaultPosition); // added 12/10
+
   const [userLocation, setUserLocation] = useState<Location | null>(null);
   const [classroomLocation, setClassroomLocation] = useState<Location | null>(
     null
@@ -39,7 +45,7 @@ export default function Home() {
   return (
     <div className="">
       <main className="w-full h-screen" role="main">
-        <div 
+        <div
           className="absolute top-0 z-0 left-0 h-screen w-screen"
           role="region"
           aria-label="Interactive map"
@@ -57,6 +63,8 @@ export default function Home() {
                 ? [classroomLocation.latitude, classroomLocation.longitude]
                 : null
             }
+            mapCenter={mapCenter} //added 12/10
+            setMapCenter={setMapCenter} // added 12/10
             ParkingLocation={ParkingLocation}
             RestaurantLocation={restaurantLocations}
             parkingVisible={parkingVisible}
@@ -67,7 +75,7 @@ export default function Home() {
         </div>
 
         {/* Title with responsive font size and centered alignment */}
-        <div 
+        <div
           className="absolute top-0 left-0 z-10 w-full h-[100px] bg-[#0000008a] backdrop-blur-sm"
           role="banner"
         >
@@ -79,14 +87,14 @@ export default function Home() {
               alt="TerrierMap logo of a Boston Terrier dog in front of a topographical map of Boston."
               className="lg:ml-[10px] lg:mt-[10px] p-0 inline fixed top-0 lg:w-[80px] lg:h-[80px]"
             />
-            <h1 
+            <h1
               className="font-['Caprasimo'] text-[30px] sm:text-[30px] lg:text-[50px] mt-[3px] lg:top-[7px] lg:ml-[100px] text-center lg:absolute"
               tabIndex={0}
             >
               TerrierMap
             </h1>
           </div>
-          <div 
+          <div
             className="inline-flex justify-center w-full lg:justify-end lg:mt-[20px] lg:pr-[50px]"
             role="navigation"
             aria-label="Navigation controls"
@@ -98,6 +106,10 @@ export default function Home() {
                     latitude: location.latitude,
                     longitude: location.longitude,
                   });
+                  setMapCenter([
+                    location.latitude,
+                    location.longitude,
+                  ] as LatLngTuple);
                 }
               }}
               aria-label="Classroom search input"
@@ -112,6 +124,10 @@ export default function Home() {
                     latitude: location.latitude,
                     longitude: location.longitude,
                   });
+                  setMapCenter([
+                    location.latitude,
+                    location.longitude,
+                  ] as LatLngTuple);
                 }
               }}
               aria-label="Current location input"
